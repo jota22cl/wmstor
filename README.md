@@ -1,5 +1,5 @@
 # WMStor
-##WMStor - Sistema de Administración de Bodegas
+## WMStor - Sistema de Administración de Bodegas
 
 Desarrollado en LARAVEL v10
 Manejo de usuarios con BREEZE
