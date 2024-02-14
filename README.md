@@ -19,6 +19,6 @@ Panel de administracion mediante paqueteria de FILAMENT v3
 
 --------
 
-# Historia de cambios.
+## Historia de cambios.
 * 13-02-2024 - Carga inicial sistema base, solo con roles y permisos del administrador.
 * 
