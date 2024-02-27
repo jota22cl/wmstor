@@ -13,7 +13,9 @@ class ManageCcostos extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Nuevo C.Costo')
+                ->closeModalByClickingAway(false),
         ];
     }
 }

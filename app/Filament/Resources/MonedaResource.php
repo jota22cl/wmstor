@@ -84,7 +84,7 @@ class MonedaResource extends Resource
                     ->searchable()
                     ->sortable(),
                 IconColumn::make('vigente')
-                    ->label('Vigente/No vigente')
+                    ->label('Vigente')
                     ->boolean()
                     ->sortable()
                     ->alignCenter(),
@@ -94,9 +94,9 @@ class MonedaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver'),
-                Tables\Actions\EditAction::make()->label('Modificar'),
-                Tables\Actions\DeleteAction::make()->label('Borrar'),
+                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
+                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
+                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
             ])
             ->bulkActions([ /*
                 Tables\Actions\BulkActionGroup::make([
@@ -104,7 +104,7 @@ class MonedaResource extends Resource
                 ]),
             */ ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->closeModalByClickingAway(false),
             ]);
     }
     

@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            //->passwordReset()    para colocar un "olvide mi clave" en el login
             ->colors([
                 //'primary' => Color::Amber,
                 'danger' => Color::Rose,

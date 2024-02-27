@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\PermissionResource\Pages;
+namespace App\Filament\Resources\ComunaResource\Pages;
 
-use App\Filament\Resources\PermissionResource;
+use App\Filament\Resources\ComunaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManagePermissions extends ManageRecords
+class ManageComunas extends ManageRecords
 {
-    protected static string $resource = PermissionResource::class;
+    protected static string $resource = ComunaResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-                ->label('Nuevo Permiso')
+                ->label('Nueva Ciudad')
                 ->closeModalByClickingAway(false),
         ];
     }

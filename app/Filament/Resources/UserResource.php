@@ -53,6 +53,9 @@ class UserResource extends Resource
                     ->disableAutocomplete()
                     ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
                     ->password()
+                    //->revealable()
+                    ->prefixIcon('heroicon-m-key')
+                    ->hiddenOn(['edit','view'])
                     ->minLength(8)
                     ->same('passwordConfirmation')
                     ->dehydrated(fn ($state) => filled($state))
@@ -61,6 +64,9 @@ class UserResource extends Resource
                     ->label('Repita la clave')
                     ->disableAutocomplete()
                     ->password()
+                    //->revealable()
+                    ->prefixIcon('heroicon-m-key')
+                    ->hiddenOn(['edit','view'])
                     ->required(fn (Page $livewire): bool => $livewire instanceof CreateRecord)
                     ->minLength(8)
                     ->dehydrated(false),
@@ -91,17 +97,17 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver'),
-                Tables\Actions\EditAction::make()->label('Modificar'),
-                Tables\Actions\DeleteAction::make()->label('Borrar'),
+                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
+                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
+                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                /* Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ]), */
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->closeModalByClickingAway(false),
             ]);
     }
     

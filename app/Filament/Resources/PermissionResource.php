@@ -54,9 +54,9 @@ class PermissionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver'),
-                Tables\Actions\EditAction::make()->label('Modificar'),
-                Tables\Actions\DeleteAction::make()->label('Borrar'),
+                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
+                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
+                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
             ])
             ->bulkActions([
                 /*
@@ -66,7 +66,7 @@ class PermissionResource extends Resource
                 */
             ])
             ->emptyStateActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->closeModalByClickingAway(false),
             ]);
     }
     

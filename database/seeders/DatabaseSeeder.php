@@ -22,7 +22,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             RolesTableSeeder::class,
-            PermissionsTableSeeder::class
+            PermissionsTableSeeder::class,
+            MonedaSeeder::class,
+            CcostoSeeder::Class,
+            GcomunSeeder::Class,
+            PseguroSeeder::Class,
+            RegionSeeder::Class,
+            CiudadSeeder::Class,
+            ComunaSeeder::Class,
         ]);
     }
 }
