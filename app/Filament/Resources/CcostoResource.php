@@ -21,11 +21,12 @@ use Filament\Tables\Columns\IconColumn;
 class CcostoResource extends Resource
 {
     protected static ?string $model = Ccosto::class;
-
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
     protected static ?string $navigationLabel = 'Centro de Costos';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
+    protected static bool $hasTitleCaseModelLabel = false;
 
     public static function form(Form $form): Form
     {

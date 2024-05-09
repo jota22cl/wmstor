@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageEmpresas extends ManageRecords
 {
     protected static string $resource = EmpresaResource::class;
+    protected static ?string $title = 'Empresas';
 
     protected function getHeaderActions(): array
     {

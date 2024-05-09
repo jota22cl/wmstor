@@ -25,11 +25,11 @@ class CiudadResource extends Resource
 {
     protected static ?string $model = Ciudad::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-map';
     protected static ?string $navigationLabel = 'Cuidades';
-    protected static ?int $navigationSort = 7;
-
+    protected static ?int $navigationSort = 8;
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -49,7 +49,8 @@ class CiudadResource extends Resource
                         ->label('Region')
                         ->columnSpan(2)
                         //->multiple()
-                        ->relationship('region', 'nombre')->preload(),
+                        ->relationship('region', 'nombre')->preload()
+                        ->searchable(),
                     Toggle::make('vigente')
                         ->label('Ciudad Vigente/No vigente')
                         ->required()

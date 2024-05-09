@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageGcomuns extends ManageRecords
 {
     protected static string $resource = GcomunResource::class;
+    protected static ?string $title = 'Gastos Comunes';
 
     protected function getHeaderActions(): array
     {

@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageRoles extends ManageRecords
 {
     protected static string $resource = RoleResource::class;
+    protected static ?string $title = 'Roles de usuarios';
 
     protected function getHeaderActions(): array
     {

@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageMonedas extends ManageRecords
 {
     protected static string $resource = MonedaResource::class;
+    protected static ?string $title = 'Monedas';
 
     protected function getHeaderActions(): array
     {

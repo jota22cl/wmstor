@@ -20,9 +20,15 @@ class Comuna extends Model
     }
 
     
+    
     public function empresas():HasMany
     {
         return $this->hasMany(Empresa::class);
+    }
+
+    public function clientes():HasMany
+    {
+        return $this->hasMany(Clientes::class);
     }
 
 }

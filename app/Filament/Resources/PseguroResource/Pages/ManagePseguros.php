@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManagePseguros extends ManageRecords
 {
     protected static string $resource = PseguroResource::class;
+    protected static ?string $title = 'Prima de Seguros';
 
     protected function getHeaderActions(): array
     {

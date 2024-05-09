@@ -22,10 +22,10 @@ class GadminResource extends Resource
 {
     protected static ?string $model = Gadmin::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
-    protected static ?string $navigationLabel = 'Gastos Administrativos';
-    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationLabel = 'Gastos de Administración';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

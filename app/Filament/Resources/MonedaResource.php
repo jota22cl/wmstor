@@ -23,11 +23,11 @@ class MonedaResource extends Resource
 {
     protected static ?string $model = Moneda::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     //protected static ?string $navigationGroupIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Monedas'; //esto es en el menui "nav"
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

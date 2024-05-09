@@ -22,10 +22,10 @@ class GcomunResource extends Resource
 {
     protected static ?string $model = Gcomun::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-squares-plus';
     protected static ?string $navigationLabel = 'Gastos Comunes';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

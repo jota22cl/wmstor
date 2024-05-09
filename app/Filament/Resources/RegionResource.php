@@ -22,10 +22,10 @@ class RegionResource extends Resource
 {
     protected static ?string $model = Region::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-globe-americas';
-    protected static ?string $navigationLabel = 'Región';
-    protected static ?int $navigationSort =6;
+    protected static ?string $navigationLabel = 'Regiones';
+    protected static ?int $navigationSort =7;
 
     public static function form(Form $form): Form
     {

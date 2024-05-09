@@ -9,6 +9,8 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageCcostos extends ManageRecords
 {
     protected static string $resource = CcostoResource::class;
+    protected static ?string $title = 'Centro de Costos';
+    //protected ?string $subheading = 'Custom Page Subheading';
 
     protected function getHeaderActions(): array
     {

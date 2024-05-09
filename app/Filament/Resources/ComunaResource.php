@@ -4,31 +4,32 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Comuna;
+use App\Models\Ciudad;
 //use App\Models\Ciudad;
+use App\Models\Comuna;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-
-use App\Filament\Resources\ComunaResource\Pages;
-use App\Filament\Resources\ComunaResource\RelationManagers;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ComunaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ComunaResource\RelationManagers;
 
 class ComunaResource extends Resource
 {
     protected static ?string $model = Comuna::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
     protected static ?string $navigationLabel = 'Comunas';
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form
     {
@@ -49,7 +50,12 @@ class ComunaResource extends Resource
                         ->label('Ciudad')
                         ->columnSpan(2)
                         //->multiple()
-                        ->relationship('ciudad', 'nombre')->preload(),
+                        ->relationship('ciudad', 'nombre')->preload()
+                        //->options(Ciudad::where('vigente','=',true)->orderBy('nombre')->pluck('nombre','id'))
+                        //->getSearchResultsUsing(fn (string $search): array => Ciudad::where('nombre', 'like', "%{$search}%")->limit(50)->pluck('nombre', 'id')->toArray())
+                        //->getOptionLabelUsing(fn ($value): ?string => Ciudad::find($value)?->nombre)
+                        ->searchable()
+                        ,
                     Toggle::make('vigente')
                         ->label('Comuna Vigente/No vigente')
                         ->required()

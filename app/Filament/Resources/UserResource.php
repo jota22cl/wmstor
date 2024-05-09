@@ -34,6 +34,11 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('empresa_id')
+                    ->label('Empresa')
+                    ->columnSpan('full')
+                    //->multiple()
+                    ->relationship('empresa', 'razonsocial')->preload(),
                 TextInput::make('name')
                     ->label('Nombre Usuario')
                     ->disableAutocomplete()
@@ -78,6 +83,12 @@ class UserResource extends Resource
                     ->label('Permisos')
                     ->multiple()
                     ->relationship('permissions', 'name')->preload(),
+/*
+                Select::make('ccostos')
+                    ->label('Rol')
+                    ->multiple()
+                    ->relationship('roles', 'name')->preload(),
+*/
             ]);
     }
 

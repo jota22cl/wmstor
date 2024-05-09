@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageCiudads extends ManageRecords
 {
     protected static string $resource = CiudadResource::class;
+    protected static ?string $title = 'Ciudades';
 
     protected function getHeaderActions(): array
     {

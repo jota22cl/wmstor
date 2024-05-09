@@ -22,10 +22,10 @@ class PSeguroResource extends Resource
 {
     protected static ?string $model = Pseguro::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     protected static ?string $navigationLabel = 'Prima de Seguros';
-    protected static ?int $navigationSort =5;
+    protected static ?int $navigationSort =6;
 
     public static function form(Form $form): Form
     {
@@ -101,7 +101,7 @@ class PSeguroResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar->closeModalByClickingAway(false)'),
+                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
                 Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
             ])
             ->bulkActions([ /*

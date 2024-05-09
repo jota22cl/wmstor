@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageRegions extends ManageRecords
 {
     protected static string $resource = RegionResource::class;
+    protected static ?string $title = 'Regiones';
 
     protected function getHeaderActions(): array
     {

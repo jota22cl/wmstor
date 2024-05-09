@@ -75,5 +75,10 @@ class PermissionsTableSeeder extends Seeder
         $data=new Permission; $data->name = "Comuna-Borrar";     $data->save();
         $data=new Permission; $data->name = "Comuna-Actualizar"; $data->save();
 
+        $data=new Permission; $data->name = "Cliente-Leer";       $data->save();
+        $data=new Permission; $data->name = "Cliente-Crear";      $data->save();
+        $data=new Permission; $data->name = "Cliente-Borrar";     $data->save();
+        $data=new Permission; $data->name = "Cliente-Actualizar"; $data->save();
+
     }
 }

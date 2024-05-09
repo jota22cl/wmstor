@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageGadmins extends ManageRecords
 {
     protected static string $resource = GadminResource::class;
+    protected static ?string $title = 'Gastos de Administración';
 
     protected function getHeaderActions(): array
     {

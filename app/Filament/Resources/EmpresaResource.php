@@ -27,11 +27,10 @@ class EmpresaResource extends Resource
 {
     protected static ?string $model = Empresa::class;
 
-    protected static ?string $navigationGroup = 'Tablas Maestras';
+    protected static ?string $navigationGroup = 'Tablas Generales';
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationLabel = 'Empresas';
-    protected static ?int $navigationSort = 0;
-
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -58,7 +57,7 @@ class EmpresaResource extends Resource
                         ->unique(ignoreRecord: true),
 
                     TextInput::make('rut')
-                        ->label('Rut')
+                        ->label('R.U.T.')
                         ->disableAutocomplete()
                         ->required()
                         ->mask('99.999.999-*')
@@ -113,8 +112,6 @@ class EmpresaResource extends Resource
                         ->columnSpan(4)
                         ->minLength(10)
                         ->maxLength(150),
-                    
-
                     TextInput::make('telefono')
                         ->label('Telefono')
                         ->disableAutocomplete()
@@ -138,7 +135,7 @@ class EmpresaResource extends Resource
                             ->minLength(10)
                             ->maxLength(150),
                         TextInput::make('repl_rut')
-                            ->label('Rut')
+                            ->label('R.U.T.')
                             ->disableAutocomplete()
                             ->required()
                             ->mask('99.999.999-*')
@@ -241,7 +238,6 @@ class EmpresaResource extends Resource
                 ->boolean()
                 ->sortable()
                 ->alignCenter(),
-
             ])
             ->filters([
                 //

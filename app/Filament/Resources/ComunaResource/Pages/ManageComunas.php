@@ -9,12 +9,13 @@ use Filament\Resources\Pages\ManageRecords;
 class ManageComunas extends ManageRecords
 {
     protected static string $resource = ComunaResource::class;
+    protected static ?string $title = 'Comunas';
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
-                ->label('Nueva Ciudad')
+                ->label('Nueva Comuna')
                 ->closeModalByClickingAway(false),
         ];
     }
