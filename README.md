@@ -20,5 +20,6 @@ Panel de administracion mediante paqueteria de FILAMENT v3
 --------
 
 ## Historia de cambios.
+* 27-02-2024 - Carga CRUD Tablas Maestras, con seeder para poblar inicialmente.
 * 13-02-2024 - Carga inicial sistema base, solo con roles y permisos del administrador.
-* 
+
