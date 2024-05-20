@@ -90,9 +90,11 @@ class TipoconstruccionResource extends Resource
                 Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
             ])
             ->bulkActions([
+                /*
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+                */
             ])
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make()

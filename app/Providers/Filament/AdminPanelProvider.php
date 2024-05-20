@@ -27,11 +27,15 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        //dd($panel);
+        dd(auth());
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('WMStor') // nombre que aparece en la esquina superior derecha
+            //->Header('WMStor')
+            ->brandName('WMStor') // nombre que aparece en la esquina superior izquierda
+            //->brandName(auth()->user()->empresa->sigla) // nombre que aparece en la esquina superior izquierda
             //->login()
             ->login(Login::class)
             //->revealablePasswords(true)

@@ -17,7 +17,6 @@ class ManageTipoconstruccions extends ManageRecords
             Actions\CreateAction::make()
                 ->label('Nuevo Tipo Construcción')
                 ->closeModalByClickingAway(false),
-
         ];
     }
 }

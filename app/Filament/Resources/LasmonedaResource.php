@@ -37,7 +37,8 @@ class LasmonedaResource extends Resource
     
     public static function form(Form $form): Form
     {
-        dd($form);
+        //dd($form);
+        dd(auth()->empresa_id());
         return $form
         ->schema([
             Forms\Components\Card::make()->columns(3)
