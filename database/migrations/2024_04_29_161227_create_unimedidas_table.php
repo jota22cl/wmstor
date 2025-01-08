@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('unimedidas', function (Blueprint $table) {
             $table->id();
+            // relacion llave empresa
             $table->unsignedBigInteger('empresa_id'); //Campo de llave foranea
             $table->foreign('empresa_id')->references('id')->on('empresas'); //Definicion campo llave foranea
-
+            // ---- datos ----
             $table->string('codigo',15);   //este debiera de ser unico.... para Empresa/codigo
             $table->string('descripcion',50);
             $table->boolean('vigente')->default(true);

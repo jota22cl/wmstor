@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('bodegas', function (Blueprint $table) {
             $table->id();
-
+            // relacion llave empresa
             $table->unsignedBigInteger('empresa_id'); //Campo de llave foranea
             $table->foreign('empresa_id')->references('id')->on('empresas'); //Definicion campo llave foranea
-
+            // ---- datos ----
             $table->string('codigo',10);   //este debiera de ser unico.... para Empresa/Ccosto/codigo
             $table->string('ubicacion')->nullable();
 

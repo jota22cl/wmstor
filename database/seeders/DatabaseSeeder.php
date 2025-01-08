@@ -20,16 +20,29 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UsersTableSeeder::class,
-            RolesTableSeeder::class,
-            PermissionsTableSeeder::class,
-            MonedaSeeder::class,
-            CcostoSeeder::Class,
-            GcomunSeeder::Class,
-            PseguroSeeder::Class,
+            /* ------ migracion 1 ------
             RegionSeeder::Class,
             CiudadSeeder::Class,
             ComunaSeeder::Class,
+
+            EmpresaSeeder::class,
+
+            UsersTableSeeder::class,
+            RolesTableSeeder::class,
+            PermissionsTableSeeder::class,
+            ------ migracion 1 ------*/
+
+            /*------ migracion 2 ------*/
+            MonedaSeeder::class,
+            CcostoSeeder::Class,
+            GcomunSeeder::Class,
+            GadminSeeder::Class,
+            PseguroSeeder::Class,
+            TipoportonSeeder::Class,
+            TipocontruccionSeeder::Class,
+            UnidadmedidaSeeder::Class,
+            /*------ migracion 2 ------*/
+
         ]);
     }
 }

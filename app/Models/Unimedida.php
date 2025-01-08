@@ -10,4 +10,10 @@ class Unimedida extends Model
     use HasFactory;
 
     protected $fillable = ['empresa_id','codigo','descripcion','vigente'];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
+    
 }

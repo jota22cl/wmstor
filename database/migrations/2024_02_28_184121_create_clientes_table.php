@@ -13,16 +13,20 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('rut',15)->unique(); //RUT
-            $table->string('nombre',150)->unique();
-            $table->string('sigla',50);
+            // relacion llave empresa
+            $table->unsignedBigInteger('empresa_id'); //Campo de llave foranea
+            $table->foreign('empresa_id')->references('id')->on('empresas'); //Definicion campo llave foranea
+            // ---- datos ----
+            $table->string('rut',15); //->unique(); //RUT
+            $table->string('nombre',150); //->unique();
+            $table->string('sigla',50)->nullable();
             $table->string('giro',150);
             $table->string('direccion',150);
             $table->unsignedBigInteger('comuna_id'); //Campo llave foranea
             $table->foreign('comuna_id')->references('id')->on('comunas'); //Definicion campo llave foranea
             $table->string('telefono',30);
             $table->string('email',150);
-            $table->string('observacion',1000);
+            $table->string('observacion',1000)->nullable();
             $table->boolean('vigente')->default(true);
             $table->timestamps();
         });

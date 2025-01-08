@@ -8,13 +8,21 @@ use App\Models\Moneda;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 //use Forms\Components\Toggle;
-use Filament\Tables\Columns\IconColumn;
+use Illuminate\Validation\Rule;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Hidden;
 //use Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
 use App\Filament\Resources\MonedaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\MonedaResource\RelationManagers;
@@ -29,24 +37,34 @@ class MonedaResource extends Resource
     protected static ?string $navigationLabel = 'Monedas'; //esto es en el menui "nav"
     protected static ?int $navigationSort = 2;
 
+    /* ********* MUESTRA LA CANTIDAD DE REGISTROS SEGUN EL QUERY ***********
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id)->count();
+    }
+    */
+
     public static function form(Form $form): Form
     {
+        //dd(auth()->user()->empresa_id);
+        //dd($this->record->id);
         return $form
            ->schema([
             Forms\Components\Card::make()->columns(3)
             ->schema([
+                //Llave empresa
+                Hidden::make('empresa_id')->default(auth()->user()->empresa_id),
 
                 TextInput::make('codigo')
                     ->label('Nombre Moneda')
                     ->placeholder('Peso')
                     ->autofocus()
                     ->disableAutocomplete()
-                    //->rules([new Uppercase()])
-                    //->extraAttributes(['style' => 'text-transform: Uppercase'])
                     ->required()
                     ->columnSpan(2)
                     ->maxLength(30)
-                    ->unique(ignoreRecord: true),
+                      ->rules(Rule::unique('monedas', 'codigo')->where('empresa_id', auth()->user()->empresa_id)->ignore($this->record->id)),
+                    //->rules(Rule::unique('monedas', 'codigo')->where('empresa_id', auth()->user()->empresa_id)),
                 TextInput::make('simbolo')
                     ->label('Simbolo Moneda')
                     ->placeholder('$')
@@ -54,7 +72,8 @@ class MonedaResource extends Resource
                     ->required()
                     ->columnSpan(1)
                     ->maxLength(10)
-                    ->unique(ignoreRecord: true),
+                    //->rules(Rule::unique('monedas', 'simbolo')->where('empresa_id', auth()->user()->empresa_id))->ignore($this->record->id),
+                    ->rules(Rule::unique('monedas', 'simbolo')->where('empresa_id', auth()->user()->empresa_id)),
                 Toggle::make('vigente')
                     ->label('Estado Vigente/No vigente')
                     ->required()
@@ -68,6 +87,11 @@ class MonedaResource extends Resource
                     ->offColor('danger'),
                 ])
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id);
     }
 
     public static function table(Table $table): Table
@@ -87,17 +111,25 @@ class MonedaResource extends Resource
                     ->label('Vigente')
                     ->boolean()
                     ->sortable()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
                     //->align('center'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([ /*
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

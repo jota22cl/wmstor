@@ -9,5 +9,10 @@ class Tipoporton extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['empresa_id','codigo','vigente'];
+    protected $fillable = ['empresa_id','empresa_id','codigo','vigente'];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

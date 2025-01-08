@@ -10,4 +10,9 @@ class Permission extends Model
     use HasFactory;
 
     protected $fillable = ['name','guard_name'];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

@@ -13,6 +13,8 @@ class ManageMonedas extends ManageRecords
 
     protected function getHeaderActions(): array
     {
+        session()->put('vssContratoId', 0);
+        if (session()->has('vssFolio')) {session()->forget('vssFolio');}
         return [
             Actions\CreateAction::make()
                 ->label('Nueva Moneda')

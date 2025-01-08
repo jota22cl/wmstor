@@ -9,5 +9,10 @@ class Gadmin extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['codigo','descripcion','valor','vigente'];
+    protected $fillable = ['empresa_id','codigo','descripcion','valor','vigente'];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

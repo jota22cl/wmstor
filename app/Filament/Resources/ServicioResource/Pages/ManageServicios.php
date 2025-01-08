@@ -10,8 +10,11 @@ class ManageServicios extends ManageRecords
 {
     protected static string $resource = ServicioResource::class;
     protected static ?string $title = 'Servicios';
+    
     protected function getHeaderActions(): array
     {
+        session()->put('vssContratoId', 0);
+        if (session()->has('vssFolio')) {session()->forget('vssFolio');}
         return [
             Actions\CreateAction::make()
             ->label('Nuevo Servicio')

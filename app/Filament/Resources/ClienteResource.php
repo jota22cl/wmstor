@@ -4,17 +4,26 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Ciudad;
 use App\Models\Comuna;
 use App\Models\Cliente;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Actions\ActionGroup;
+//use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Enums\ActionsPosition;
+
+use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ClienteResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,6 +44,9 @@ class ClienteResource extends Resource
         ->schema([
             Forms\Components\Card::make()->columns(6)
             ->schema([
+                //Llave empresa
+                Hidden::make('empresa_id')->default(auth()->user()->empresa_id),
+
                 TextInput::make('rut')
                     ->label('R.U.T')
                     ->disableAutocomplete()
@@ -53,7 +65,7 @@ class ClienteResource extends Resource
                     ->required()
                     ->columnSpan(4)
                     ->autofocus()
-                    ->minLength(10)
+                    ->minLength(5)
                     ->maxLength(150)
                     ->unique(ignoreRecord: true),
 
@@ -86,30 +98,49 @@ class ClienteResource extends Resource
                     ->required()
                     ->columnSpan(2)
                     ->relationship('comuna', 'nombre')->preload()
-                    ->searchable()
-                    ,
+                    ->searchable(),
+                    
                 TextInput::make('telefono')
                     ->label('Telefono')
                     ->disableAutocomplete()
-                    ->required()
-                    ->prefixIcon('heroicon-m-phone')
+                    //->required()
+                    //->prefixIcon('heroicon-m-phone')
                     ->prefix('(+56)')
                     ->tel()
                     ->mask('9 9999 9999')
                     ->columnSpan(2)
                     ->minLength(5)
                     ->maxLength(30),
-                    
+
+                TextInput::make('celular')
+                    ->label('Celular')
+                    ->disableAutocomplete()
+                    //->required()
+                    //->prefixIcon('heroicon-m-phone')
+                    ->prefix('(+56)')
+                    ->tel()
+                    ->mask('9 9999 9999')
+                    ->columnSpan(2)
+                    ->minLength(5)
+                    ->maxLength(30),
+
                 TextInput::make('email')
                     ->label('Email')
                     ->email()
-                    ->prefixIcon('heroicon-m-envelope')
+                    //->prefixIcon('heroicon-m-envelope')
                     ->disableAutocomplete()
                     ->required()
-                    ->columnSpan(4)
+                    ->columnSpan(2)
                     ->minLength(10)
                     ->maxLength(150),
 
+                Textarea::make('observacion')
+                    ->label('Observaciones')
+                    ->columnSpan(6)
+                    ->rows(6)
+                    ->maxLength(1000),
+
+/*
                 RichEditor::make('observacion')
                     ->label('Observacion')
                     ->columnSpan(6)
@@ -126,7 +157,7 @@ class ClienteResource extends Resource
                         'undo',
                     ])
                     ->maxLength(1000),
-                    
+*/
 
             
                 Toggle::make('vigente')
@@ -141,9 +172,13 @@ class ClienteResource extends Resource
                     ->onColor('success')
                     ->offColor('danger'),
 
-
             ])
         ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id);
     }
 
     public static function table(Table $table): Table
@@ -163,16 +198,24 @@ class ClienteResource extends Resource
                 ->label('Vigente')
                 ->boolean()
                 ->sortable()
-                ->alignCenter(),
+                ->alignCenter()
+                ->action(function($record, $column){
+                    $name = $column->getName();
+                    $record->update([
+                        $name => !$record->$name
+                    ]);
+                }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')->color('info')->tooltip('Acciones')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 /* Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

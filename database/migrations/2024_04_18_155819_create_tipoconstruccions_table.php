@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('tipoconstruccions', function (Blueprint $table) {
             $table->id();
-            // llave empresa
-            $table->unsignedBigInteger('empresa_id')->index(); //Campo de llave foranea
+            // relacion llave empresa
+            $table->unsignedBigInteger('empresa_id'); //Campo de llave foranea
             $table->foreign('empresa_id')->references('id')->on('empresas'); //Definicion campo llave foranea
-            // campos
+            // ---- datos ----
             $table->string('codigo');
             $table->boolean('vigente')->default(true);
             $table->timestamps();

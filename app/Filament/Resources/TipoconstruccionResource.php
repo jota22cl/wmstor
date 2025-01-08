@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Tipoconstruccion;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\IconColumn;
@@ -18,6 +19,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TipoconstruccionResource\Pages;
 use App\Filament\Resources\TipoconstruccionResource\RelationManagers;
+use Filament\Tables\Enums\ActionsPosition;
+
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 
 class TipoconstruccionResource extends Resource
 {
@@ -34,13 +41,9 @@ class TipoconstruccionResource extends Resource
         ->schema([
             Forms\Components\Card::make()->columns(3)
             ->schema([
-                Select::make('empresa_id')
-                    ->label('Empresa')
-                    ->columnSpan('full')
-                    //->multiple()
-                    //->relationship('empresa', 'razonsocial')->preload(),
-                    ->options(Empresa::where('vigente','=',true)->pluck('razonsocial','id')),
-                    // lal linea de arriba "->options()" funciona solo si se agrega "use App\Models\Empresa;"
+                //Llave empresa
+                Hidden::make('empresa_id')->default(auth()->user()->empresa_id),
+
                 TextInput::make('codigo')
                     ->label('Tipo de Construcción')
                     ->placeholder('Panel')
@@ -66,6 +69,11 @@ class TipoconstruccionResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -79,16 +87,24 @@ class TipoconstruccionResource extends Resource
                     ->label('Vigente')
                     ->boolean()
                     ->sortable()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 /*
                 Tables\Actions\BulkActionGroup::make([

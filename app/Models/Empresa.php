@@ -17,14 +17,19 @@ class Empresa extends Model
         'rut',
         'giro',
         'direccion',
+        'direccionContrato',
         'comuna_id',
         'telefono',
         'email',
+        'titulo',
         'repl_nombre',
         'repl_rut',
         'repl_telefono',
         'repl_email',
         'logo',
+        'periodo',
+        'directorio',
+        'pagweb',
         'vigente'
     ];
 

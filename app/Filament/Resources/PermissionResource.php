@@ -16,15 +16,21 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Enums\ActionsPosition;
+
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
+    protected static ?string $navigationGroup = 'Administración del Sistema';
     protected static ?string $navigationLabel = 'Permisos';
     protected static ?string $navigationIcon = 'heroicon-o-key';
-    protected static ?string $navigationGroup = 'Gestión de usuarios';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -40,11 +46,18 @@ class PermissionResource extends Resource
             ]);
     }
 
+    /*
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id);
+    }
+    */
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('id')->searchable(),
+                //TextColumn::make('id')->searchable(),
                 TextColumn::make('name')->searchable()->sortable()
                     ->label('Nombre del Permiso'),
                 //TextColumn::make('created_at')->sortable()->dateTime('d-M-Y')
@@ -54,10 +67,12 @@ class PermissionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 /*
                 Tables\Actions\BulkActionGroup::make([

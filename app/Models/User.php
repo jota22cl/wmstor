@@ -52,4 +52,10 @@ class User extends Authenticatable
         return $this->belongsTo(Empresa::class);
     }
 
+    public function ccostos()
+    {
+        return $this->belongsToMany(Ccosto::class, 'ccosto_user');
+    }
+
+
 }

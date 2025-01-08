@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Empresa;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -13,7 +14,11 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
+        $empresa = new Empresa;
+        $EmpId=$empresa->select('id')->where('sigla','=','Storage')->get();
+
         $data=new User;
+        $data->empresa_id = $EmpId[0]->id;
         $data->name = "Administrador";
         $data->email = "sistemas@storage.cl";
         $data->password = "15561556";

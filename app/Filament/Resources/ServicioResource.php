@@ -18,6 +18,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\Resource;
 use App\Filament\Resources\ServicioResource\Pages;
 use App\Filament\Resources\ServicioResource\RelationManagers;
+use Filament\Tables\Enums\ActionsPosition;
+
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 
 class ServicioResource extends Resource
 {
@@ -27,10 +33,11 @@ class ServicioResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $navigationLabel = 'Servicios';
     protected static ?int $navigationSort = 13;
-    
+
     public static function form(Form $form): Form
     {
         //dd(auth());
+        /*
         dd(
             auth(),
             auth()->user()->id,
@@ -41,6 +48,7 @@ class ServicioResource extends Resource
             auth()->user()->empresa->sigla,
             auth()->user()->empresa->direccion,
         );
+        */
         //dd(auth()->id(),auth());
         //dd($_SESSION["empresa_id"],$_SESSION["empresa_name"],$_SESSION["empresa_sigla"],session());
         //dd($_SESSION["empresa_id"],$_SESSION["empresa_name"],$_SESSION["empresa_sigla"],auth());
@@ -50,16 +58,8 @@ class ServicioResource extends Resource
             ->schema([
                 Forms\Components\Card::make()->columns(4)
                 ->schema([
-                    Hidden::make('empresa_id')->default('15'),
-                    /*
-                    Select::make('empresa_id')
-                        ->label('Empresa')
-                        ->columnSpan('full')
-                        //->multiple()
-                        //->relationship('empresa', 'razonsocial')->preload(),
-                        ->options(Empresa::where('vigente','=',true)->pluck('razonsocial','id')),
-                        // lal linea de arriba "->options()" funciona solo si se agrega "use App\Models\Empresa;"
-                    */
+                    //Llave empresa
+                    Hidden::make('empresa_id')->default(auth()->user()->empresa_id),
 
                     TextInput::make('prioridad')
                         ->label('Prioridad')
@@ -83,7 +83,6 @@ class ServicioResource extends Resource
                     TextInput::make('descripcion')
                         ->label('Descripcion de Servicio')
                         ->placeholder('Servicio de Bodega')
-                        ->autofocus()
                         ->disableAutocomplete()
                         ->required()
                         ->columnSpan(3)
@@ -106,15 +105,27 @@ class ServicioResource extends Resource
                         ->columnSpan(2)
                         ->numeric()
                         //->minValue(1)
-                        ->default(0),
+                        ->default(1),
                     TextInput::make('codigo_flexline')
                         ->label('Cod.Flexline (para Facturar)')
                         //->required()
                         ->columnSpan(2)
                         ->default(""),
 
+                    Toggle::make('imprimeEnContrato')
+                    ->label('Se imprime en el Contrato')
+                        ->required()
+                        ->columnSpan('full')
+                        ->default(false)
+                        ->onIcon('heroicon-o-check')
+                        ->offIcon('heroicon-o-x-mark')
+                        //->onIcon('heroicon-o-hand-thumb-up')
+                        //->offIcon('heroicon-o-hand-thumb-down')
+                        ->onColor('success')
+                        ->offColor('danger'),
+
                     Toggle::make('vigente')
-                        ->label('Estado Vigente/No vigente')
+                    ->label('Estado Vigente/No vigente')
                         ->required()
                         ->columnSpan('full')
                         ->default(true)
@@ -127,6 +138,11 @@ class ServicioResource extends Resource
                     ])
     
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id);
     }
 
     public static function table(Table $table): Table
@@ -148,20 +164,39 @@ class ServicioResource extends Resource
                     ->label('Ddescripción')
                     ->searchable()
                     ->sortable(),
+                IconColumn::make('imprimeEnContrato')
+                    ->label('en Contrato')
+                    ->boolean()
+                    ->sortable()
+                    ->alignCenter()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
                 IconColumn::make('vigente')
                     ->label('Vigente')
                     ->boolean()
                     ->sortable()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
             ])
         ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 /*
                 Tables\Actions\BulkActionGroup::make([

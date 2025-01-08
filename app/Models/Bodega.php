@@ -33,6 +33,9 @@ class Bodega extends Model
         'vigente'
     ];
 
-
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 
 }

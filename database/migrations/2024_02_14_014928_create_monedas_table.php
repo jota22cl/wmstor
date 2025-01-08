@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('monedas', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo',30)->unique();
-            $table->string('simbolo',10)->unique();
+            // relacion llave empresa
+            $table->unsignedBigInteger('empresa_id'); //Campo de llave foranea
+            $table->foreign('empresa_id')->references('id')->on('empresas'); //Definicion campo llave foranea
+            // ---- datos ----
+            $table->string('codigo',30); //->unique();
+            $table->string('simbolo',10); //->unique();
             $table->boolean('vigente')->default(true);
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ return new class extends Migration
             // relacion llave empresa
             $table->unsignedBigInteger('empresa_id'); //Campo de llave foranea
             $table->foreign('empresa_id')->references('id')->on('empresas'); //Definicion campo llave foranea
-            // campos
+            // ---- datos ----
             $table->integer('prioridad');
             //$table->string('codigo',15);   //este debiera de ser unico.... para Empresa/codigo
             $table->string('descripcion',50);
@@ -26,7 +26,7 @@ return new class extends Migration
             // definicion unidad de COBRO
             $table->unsignedBigInteger('unimed_cobro_id'); //Campo de llave foranea
             $table->foreign('unimed_cobro_id')->references('id')->on('unimedidas'); //Definicion campo llave foranea
-            // campos
+            // ---- datos ----
             $table->decimal('factor_conversion',4,2)->default(0)->nullable();
             $table->string('codigo_flexline',4)->default("")->nullable();
             $table->boolean('vigente')->default(true);

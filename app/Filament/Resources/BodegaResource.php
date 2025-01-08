@@ -7,11 +7,11 @@ use Filament\Tables;
 use App\Models\Bodega;
 use App\Models\Ccosto;
 use App\Models\Empresa;
-use Filament\Forms\Form;
 use App\Models\Tipoporton;
+use App\Models\Tipoconstruccion;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Forms\Components\Card;
-use App\Models\Tipoconstruccion;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Hidden;
@@ -19,15 +19,23 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\EditAction;
+//use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Actions\DeleteAction;
+//use App\Filament\Resources\BodegaResource\Widgets\BodegaChart;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
+
+use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\BodegaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BodegaResource\RelationManagers;
-//use App\Filament\Resources\BodegaResource\Widgets\BodegaChart;
 use App\Filament\Resources\BodegaResource\Widgets\BodegaStatsOverview;
 
 //use Closure;
@@ -48,21 +56,9 @@ class BodegaResource extends Resource
             ->schema([
             Forms\Components\Card::make()->columns(12)
             ->schema([
-                Hidden::make('empresa_id')
-                    ->default('15'),
-                    //->default('Almacenes Generales de Deposito Storage S.A.'),
-                /*
-                Select::make('empresa_id')
-                    ->label('Empresa')
-                    ->required()
-                    ->columnSpan('full')
-                    ->options(Empresa::where('vigente','=',true)->pluck('razonsocial','id'))
-                    ->default('Almacenes Generales de Deposito Storage S.A.')
-                    ->selectablePlaceholder(false)
-                    ->hiddenOn(CommentsRelationManager::class)
-                    //->relationship('empresa', 'razonsocial')->preload(),
-                    ,
-                */
+                //Llave empresa
+                Hidden::make('empresa_id')->default(auth()->user()->empresa_id),
+
                 TextInput::make('codigo')
                     ->label('Cod.Bodega')
                     ->required()
@@ -80,29 +76,32 @@ class BodegaResource extends Resource
                 ->schema([
                     TextInput::make('ancho')
                         ->label('Ancho')
-                        ->id('ancho')
+                        //->id('ancho')
                         //->required()
                         ->columnSpan(1)
                         ->numeric()
                         ->default(0)
+                        ->live()->dehydrated()
                         /*->afterStateUpdated(function (Closure $set, $state) {
                             $set('mt2calc', Carbon::parse($state)->mt2calc);
                         })
                         */,
                     TextInput::make('largo')
                         ->label('Largo')
-                        ->id('largo')
+                        //->id('largo')
                         //->required()
                         ->columnSpan(1)
                         ->numeric()
+                        ->live()->dehydrated()
                         //->inputMode('decimal',2)
                         ->default(0),
                     TextInput::make('alto')
                         ->label('Alto')
-                        ->id('alto')
+                        //->id('alto')
                         //->required()
                         ->columnSpan(1)
                         ->numeric()
+                        ->live()->dehydrated()
                         //->inputMode('decimal',2)
                         ->default(0),
                     TextInput::make('mt2')
@@ -112,22 +111,30 @@ class BodegaResource extends Resource
                         ->numeric()
                         ->minValue(1)
                         ->default(0),
-                    TextInput::make('mt2calc')
+                    Placeholder::make('mt2calc')
                         ->label('Mt2 (Calculado)')
-                        ->id('mt2calc')
+                        ->content(function ($get){
+                            return $get('ancho') * $get('largo');
+                        })
+                        //->id('mt2calc')
                         //->disabled()
                         //->dehydrated(false) // este atributo hace que no se grabe en la base de datos
                         ->columnSpan(1)
-                        ->numeric()
-                        ->default(0),
-                    TextInput::make('mt3calc')
+                        //->numeric()
+                        //->default(0)
+                        ,
+                    Placeholder::make('mt3calc')
                         ->label('Mt3 (Calculado)')
-                        ->id('mt3calc')
+                        ->content(function ($get){
+                            return $get('ancho') * $get('largo') * $get('alto');
+                        })
+                        //->id('mt3calc')
                         //->disabled()
                         //->dehydrated(false) // este atributo hace que no se grabe en la base de datos
                         ->columnSpan(1)
-                        ->numeric()
-                        ->default(0),
+                        //->numeric()
+                        //->default(0)
+                        ,
                 ])->columnSpan(6),
 
 
@@ -159,24 +166,34 @@ class BodegaResource extends Resource
                     ->label('Tipo de porton')
                     ->columnSpan(6)
                     //->required()
-                    ->options(Tipoporton::where('vigente','=',true)->orderBy('codigo')->pluck('codigo','id')),
+                    ->options(Tipoporton::where('empresa_id', auth()->user()->empresa_id)->where('vigente','=',true)->orderBy('codigo')->pluck('codigo','id')),
                 Select::make('tipoconstruccion_id')
                     ->label('Tipo de construcción')
                     ->columnSpan(6)
                     //->required()
-                    ->options(Tipoconstruccion::where('vigente','=',true)->orderBy('codigo')->pluck('codigo','id')),
+                    ->options(Tipoconstruccion::where('empresa_id', auth()->user()->empresa_id)->where('vigente','=',true)->orderBy('codigo')->pluck('codigo','id')),
 
-                RichEditor::make('observacion')
-                    ->label('Observación')
+                //RichEditor::make('observacion')
+                //    ->label('Observación')
+                //    ->columnSpan(6)
+                //    //->maxSize(1000)
+                //    ->toolbarButtons(['blockquote','bold','bulletList','codeBlock','italic','orderedList','redo','strike','underline','undo',]),
+                Textarea::make('observacion')
+                    ->label('Observaciones')
                     ->columnSpan(6)
-                    //->maxSize(1000)
-                    ->toolbarButtons(['blockquote','bold','bulletList','codeBlock','italic','orderedList','redo','strike','underline','undo',]),
+                    ->rows(5)
+                    ->maxLength(1000),
 
-                RichEditor::make('equipamiento')
-                    ->label('Equipamiento')
+                //RichEditor::make('equipamiento')
+                //    ->label('Equipamiento')
+                //    ->columnSpan(6)
+                //    //->maxSize(1000)
+                //    ->toolbarButtons(['blockquote','bold','bulletList','codeBlock','italic','orderedList','redo','strike','underline','undo',]),
+                Textarea::make('equipamiento')
+                ->label('Equipamiento')
                     ->columnSpan(6)
-                    //->maxSize(1000)
-                    ->toolbarButtons(['blockquote','bold','bulletList','codeBlock','italic','orderedList','redo','strike','underline','undo',]),
+                    ->rows(5)
+                    ->maxLength(1000),
 
 
                 Toggle::make('compartida')
@@ -200,6 +217,11 @@ class BodegaResource extends Resource
         ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return static::getModel()::query()->where('empresa_id', auth()->user()->empresa_id);
+    }
+    
     public static function table(Table $table): Table
     {
         return $table
@@ -232,24 +254,48 @@ class BodegaResource extends Resource
                     ->alignCenter()
                     ->toggleable()
                     ->sortable()
-                    ->boolean(),
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
                 Tables\Columns\IconColumn::make('ocupada')
                     ->label('Ocupada')
                     ->alignCenter()
                     ->toggleable()
                     ->sortable()
-                    ->boolean(),
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
                 Tables\Columns\IconColumn::make('vigente')
                     ->label('Vigente')
                     ->alignCenter()
                     ->sortable()
-                    ->boolean(),
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
                 Tables\Columns\IconColumn::make('medidasok')
                     ->label('Med.Conf.')
                     ->alignCenter()
                     ->toggleable()
                     ->sortable()
-                    ->boolean(),
+                    ->boolean()
+                    ->action(function($record, $column){
+                        $name = $column->getName();
+                        $record->update([
+                            $name => !$record->$name
+                        ]);
+                    }),
             ])
             ->filters([
                 SelectFilter::make('vigente')->label('Bod.Vigente')
@@ -278,10 +324,12 @@ class BodegaResource extends Resource
                 //Filter::make('medidasok')->toggle()->label('Medidas Ok'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 /*
                 Tables\Actions\BulkActionGroup::make([

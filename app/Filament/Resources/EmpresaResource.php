@@ -22,15 +22,22 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EmpresaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmpresaResource\RelationManagers;
+use Filament\Tables\Enums\ActionsPosition;
+
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 
 class EmpresaResource extends Resource
 {
     protected static ?string $model = Empresa::class;
 
-    protected static ?string $navigationGroup = 'Tablas Generales';
+    protected static ?string $navigationGroup = 'Administración del Sistema';
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationLabel = 'Empresas';
     protected static ?int $navigationSort = 1;
+
 
     public static function form(Form $form): Form
     {
@@ -77,7 +84,7 @@ class EmpresaResource extends Resource
                         ->maxLength(200),
 
                     TextInput::make('direccion')
-                        ->label('Direccion')
+                        ->label('Dirección')
                         ->disableAutocomplete()
                         ->required()
                         ->columnSpan(4)
@@ -89,7 +96,16 @@ class EmpresaResource extends Resource
                         ->columnSpan(2)
                         //->multiple()
                         ->relationship('comuna', 'nombre')->preload(),
-/*
+
+                    TextInput::make('direccionContrato')
+                        ->label('Dirección en contrato')
+                        ->disableAutocomplete()
+                        ->required()
+                        ->columnSpan(6)
+                        ->minLength(10)
+                        ->maxLength(400),
+
+                        /*
                     TextInput::make('ciudad.nombre')
                         ->label('Ciudad')
                         ->readonly()
@@ -123,16 +139,44 @@ class EmpresaResource extends Resource
                         ->columnSpan(2)
                         ->minLength(5)
                         ->maxLength(30),
+
+                    TextInput::make('pagweb')
+                        ->label('Página Web')
+                        ->placeholder('www.empresa.com')
+                        ->prefixIcon('heroicon-m-link')
+                        ->suffixIcon('heroicon-m-globe-alt')
+                        ->prefix('http://')
+                        //->suffix('.com')
+                        ->required()
+                        ->maxLength(40)
+                        ->columnSpan(6),
+
+
+
+
+
+
                 ]),
 
                 Forms\Components\Card::make()->columns(6)
                     ->schema([
+                        Select::make('titulo')
+                            ->label('Titulo')
+                            ->options([
+                                'don' => 'don',
+                                'doña' => 'doña',
+                            ])
+                            ->default('don')
+                            ->required()
+                            ->autofocus()
+                            //->searchable()
+                            ->columnSpan(1),
                         TextInput::make('repl_nombre')
                             ->label('Representante legal')
                             ->disableAutocomplete()
                             ->required()
-                            ->columnSpan(4)
-                            ->minLength(10)
+                            ->columnSpan(3)
+                            ->minLength(8)
                             ->maxLength(150),
                         TextInput::make('repl_rut')
                             ->label('R.U.T.')
@@ -172,7 +216,8 @@ class EmpresaResource extends Resource
                                 IMPORTANTE: La imagen debe tener un aspecto de 16:9, su tamaño debe ser de 500 x 281.
                                 Si no tiene el aspecto o tamaño indicado, la imagen sera forzada a esos valores.')
                             ->image()
-                            ->directory('image/empresa')
+                            //->directory('image/empresa')
+                            ->directory('')
                             ->preserveFilenames()
                             ->imageResizeMode('force')
                             //->imageCropAspectRatio('16:9')
@@ -237,16 +282,24 @@ class EmpresaResource extends Resource
                 ->label('Vigente')
                 ->boolean()
                 ->sortable()
-                ->alignCenter(),
+                ->alignCenter()
+                ->action(function($record, $column){
+                    $name = $column->getName();
+                    $record->update([
+                        $name => !$record->$name
+                    ]);
+                }),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('Ver')->closeModalByClickingAway(false),
-                Tables\Actions\EditAction::make()->label('Modificar')->closeModalByClickingAway(false),
-                Tables\Actions\DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false),
-            ])
+                ActionGroup::make([
+                    ViewAction::make()->label('Ver')->closeModalByClickingAway(false)->color('gray'),
+                    EditAction::make()->label('Modificar')->closeModalByClickingAway(false)->color('info'),
+                    DeleteAction::make()->label('Borrar')->closeModalByClickingAway(false)->color('danger'),
+                ])->icon('heroicon-m-ellipsis-vertical')
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 /* Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

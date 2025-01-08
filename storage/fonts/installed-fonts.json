@@ -1,0 +1,24 @@
+{
+    "arial narrow": {
+        "normal": "C:\\laragon\\www\\wmstor\\storage\\fonts\/arial_narrow_normal_c21fcbdb3efcf28361168a00c4b8c05a",
+        "100": "C:\\laragon\\www\\wmstor\\storage\\fonts\/arial_narrow_100_c21fcbdb3efcf28361168a00c4b8c05a",
+        "bold": "C:\\laragon\\www\\wmstor\\storage\\fonts\/arial_narrow_bold_7cc1f9d69ee4714603e7468533a7f755",
+        "200": "C:\\laragon\\www\\wmstor\\storage\\fonts\/arial_narrow_200_8bdd648fd5002c08c43561e788b3289b",
+        "800": "arial_narrow_800_6a2a5c8b30ac0d8ba431a141ff84ff01"
+    },
+    "arialnarrow": {
+        "normal": "arialnarrow_normal_c21fcbdb3efcf28361168a00c4b8c05a"
+    },
+    "ravie normal": {
+        "normal": "ravie_normal_normal_bfd40d5be153264c235f6c04d45a659c"
+    },
+    "arial narrow bold": {
+        "normal": "arial_narrow_bold_normal_7cc1f9d69ee4714603e7468533a7f755"
+    },
+    "arial narrow italic": {
+        "normal": "arial_narrow_italic_normal_8bdd648fd5002c08c43561e788b3289b"
+    },
+    "arial narrow bold italic": {
+        "normal": "arial_narrow_bold_italic_normal_6a2a5c8b30ac0d8ba431a141ff84ff01"
+    }
+}
