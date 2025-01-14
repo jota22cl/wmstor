@@ -27,6 +27,7 @@
 <body>
     <h1>¡Oops! Algo salió mal. 😓</h1>
     <p>@yield('message', 'Lo sentimos, estamos trabajando en solucionar este problema.')</p>
+    <p align="center">(Error 500)</p>
     <a href="/">Volver al inicio</a>
 </body>
 </html>
