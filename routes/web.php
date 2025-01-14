@@ -62,4 +62,10 @@ Route::get('/admin/contratos/{id}/contratoADM', [ContratoController::class, 'gen
     ->middleware(['auth'])  // Asegúrate de que esta ruta está protegida si lo necesitas
     ->name('contratos.contratoADM');
 */
+
+Route::get('/prueba', function () {
+    return 'Laravel está funcionando correctamente';
+});
+
+
 require __DIR__.'/auth.php';
