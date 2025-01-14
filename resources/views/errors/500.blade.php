@@ -25,6 +25,7 @@
     </style>
 </head>
 <body>
+    <img src="{{ asset('images/WMStor-logo2.png') }}" alt="WMStor">
     <h1>¡Oops! Algo salió mal. 😓</h1>
     <p>@yield('message', 'Lo sentimos, estamos trabajando en solucionar este problema.')</p>
     <p align="center">(Error 500)</p>
