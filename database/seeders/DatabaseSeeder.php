@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            /* ------ migracion 1 ------
+            /* ------ migracion 1 ------ */
             RegionSeeder::Class,
             CiudadSeeder::Class,
             ComunaSeeder::Class,
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             RolesTableSeeder::class,
             PermissionsTableSeeder::class,
-            ------ migracion 1 ------*/
+            /* ------ migracion 1 ------*/
 
             /*------ migracion 2 ------*/
             MonedaSeeder::class,

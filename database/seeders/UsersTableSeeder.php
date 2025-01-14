@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
 
         $data=new User;
         $data->empresa_id = $EmpId[0]->id;
-        $data->name = "Administrador";
+        $data->name = "Juan Luis Gutierrez";
         $data->email = "sistemas@storage.cl";
         $data->password = "15561556";
         $data->save();
