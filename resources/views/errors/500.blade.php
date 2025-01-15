@@ -11,14 +11,15 @@
             padding: 50px;
         }
         h1 {
-            font-size: 50px;
-            color: #ff6b6b;
+            font-size: 35px;
+            color: #ff0000;
         }
         p {
-            font-size: 20px;
+            font-size: 15px;
+            color: #4e97d3;
         }
         a {
-            color: #3498db;
+            color: #0011ff;
             text-decoration: none;
             font-size: 18px;
         }

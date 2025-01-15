@@ -11,14 +11,15 @@
             padding: 50px;
         }
         h1 {
-            font-size: 50px;
-            color: #1100ff;
+            font-size: 35px;
+            color: #ff0000;
         }
         p {
-            font-size: 20px;
+            font-size: 15px;
+            color: #4e97d3;
         }
         a {
-            color: #3498db;
+            color: #0011ff;
             text-decoration: none;
             font-size: 18px;
         }
@@ -26,8 +27,8 @@
 </head>
 <body>
     <img src="{{ asset('images/WMStor-logo2.png') }}" alt="WMStor">
-    <h3>La página solicitada no existe.</h3>
+    <h1>La página solicitada no existe.</h1>
     <p align="center">(Error 404)</p>
-    <a href="/">Volver al inicio</a>
+    <a href="/admin">Volver al inicio</a>
 </body>
 </html>
